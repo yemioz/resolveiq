@@ -90,9 +90,8 @@ def validate_referential_integrity(
 
 
 def run_all(df: pd.DataFrame) -> None:
-    """run every check, in order. Validates a normalizd request dataset with event indicators"""
+    # run every check, in order. Validates a normalizd request dataset with event indicators
     validate_schema(df)
     validate_grain(df)
     validate_business_rules(df)
     validate_censoring_consistency(df)
-    

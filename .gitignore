@@ -37,6 +37,8 @@ htmlcov/
 # Private learning/reference material and personal decision log
 /reference/
 /PROJECT_LOG.md
+/PROJECT_LOG2.md
+/AGENTS2.md
 /check_updated_at.py
 
 # Generated data, database dumps, and local database storage

@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: resolviq
+      POSTGRES_USER: resolviq
+      POSTGRES_PASSWORD: ${RESOLVIQ_DB_PASSWORD:?Set RESOLVIQ_DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - resolviq_pgdata:/var/lib/postgresql/data
+      - ../sql/ddl:/docker-entrypoint-initdb.d  # DDL runs automatically on first container start
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      RESOLVIQ_DB_HOST: postgres
+      RESOLVIQ_DB_PORT: 5432
+      RESOLVIQ_DB_NAME: resolviq
+      RESOLVIQ_DB_USER: resolviq
+      RESOLVIQ_DB_PASSWORD: ${RESOLVIQ_DB_PASSWORD:?Set RESOLVIQ_DB_PASSWORD}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+volumes:
+  resolviq_pgdata:

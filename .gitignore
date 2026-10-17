@@ -1,0 +1,94 @@
+# Python bytecode, packaging, and build output
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+
+# Local environments
+.venv/
+venv/
+env/
+.conda/
+
+# Test, lint, type-check, and notebook caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+.hypothesis/
+.ipynb_checkpoints/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Secrets and machine-specific settings; retain the configuration template
+.env
+.env.*
+!.env.example
+.envrc
+.aws/
+.codex/
+.agents/
+
+# Private learning/reference material and personal decision log
+/reference/
+/PROJECT_LOG.md
+/check_updated_at.py
+
+# Generated data, database dumps, and local database storage
+data/**/*.csv
+data/**/*.json
+data/**/*.jsonl
+data/**/*.ndjson
+data/**/*.parquet
+data/**/*.xlsx
+data/**/*.feather
+data/**/*.arrow
+data/**/*.gz
+*.dump
+*.backup
+*.sqlite
+*.sqlite3
+*.db
+pgdata/
+postgres_data/
+
+# Trained model artifacts
+*.pkl
+*.joblib
+/artifacts/
+/models/
+
+# Runtime logs and temporary output
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+/tmp/
+/temp/
+
+# macOS metadata / AppleDouble files, Windows metadata, and local editors
+.DS_Store
+._*
+__MACOSX/
+.AppleDouble/
+.LSOverride
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.vscode/
+.idea/
+
+# Power BI local caches; retain report source and deliverable files
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+*.pbix.lock
+
+# Keep shared repository configuration such as .github/, .gitignore,
+# .dockerignore, and .env.example eligible for version control.

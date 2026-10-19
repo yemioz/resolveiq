@@ -5,8 +5,8 @@ CREATE SCHEMA IF NOT EXISTS raw;
 
 CREATE TABLE IF NOT EXISTS raw.requests (
     unique_key                      TEXT PRIMARY KEY,
-    created_date                    TIMESTAMPTZ NOT NULL,
-    closed_date                     TIMESTAMPTZ,
+    created_date                    TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    closed_date                     TIMESTAMP WITHOUT TIME ZONE,
     updated_at                      TIMESTAMPTZ NOT NULL,
     agency                          TEXT,
     agency_name                     TEXT,

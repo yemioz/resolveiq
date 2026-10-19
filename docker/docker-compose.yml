@@ -21,8 +21,35 @@ services:
       RESOLVIQ_DB_NAME: resolviq
       RESOLVIQ_DB_USER: resolviq
       RESOLVIQ_DB_PASSWORD: ${RESOLVIQ_DB_PASSWORD:?Set RESOLVIQ_DB_PASSWORD}
+      SOCRATA_APP_TOKEN: ${SOCRATA_APP_TOKEN:?Set SOCRATA_APP_TOKEN}
     ports:
       - "8000:8000"
+    depends_on:
+      - postgres
+
+  notebook:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    working_dir: /app
+    command:
+      - jupyter
+      - lab
+      - --ip=0.0.0.0
+      - --port=8888
+      - --no-browser
+      - --allow-root
+    environment:
+      RESOLVIQ_DB_HOST: postgres
+      RESOLVIQ_DB_PORT: 5432
+      RESOLVIQ_DB_NAME: resolviq
+      RESOLVIQ_DB_USER: resolviq
+      RESOLVIQ_DB_PASSWORD: ${RESOLVIQ_DB_PASSWORD:?Set RESOLVIQ_DB_PASSWORD}
+      SOCRATA_APP_TOKEN: ${SOCRATA_APP_TOKEN:?Set SOCRATA_APP_TOKEN}
+    ports:
+      - "127.0.0.1:8888:8888"
+    volumes:
+      - ..:/app
     depends_on:
       - postgres
 

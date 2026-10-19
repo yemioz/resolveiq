@@ -15,11 +15,11 @@ when an incremental pull is interrupted and later resumed.
 
 from __future__ import annotations
 
-
-import requests
-import pandas as pd
 from collections.abc import Iterator
 from datetime import UTC, datetime
+
+import pandas as pd
+import requests
 
 from src.config import SOCRATA
 from src.validation.validators import run_all
@@ -65,31 +65,29 @@ class SocrataClient:
                 headers={"X-App-Token": self.app_token},
                 json={
                     "query": query,
-                    "page": {"pageSize": PAGE_SIZE, "pageNumber": page_number}
+                    "page": {"pageSize": PAGE_SIZE, "pageNumber": page_number},
                 },
-                timeout=REQUEST_TIMEOUT_SECONDS
+                timeout=REQUEST_TIMEOUT_SECONDS,
             )
             response.raise_for_status()
             records = response.json()
-        
+
             if not records:
                 break
-        
+
             yield records
-        
+
             if len(records) < PAGE_SIZE:
                 break
-        
+
             page_number += 1
 
-    def fetch_all_incremental(
-        self, since: datetime, until: datetime | None = None
-    ) -> list[dict]:
+    def fetch_all_incremental(self, since: datetime, until: datetime | None = None) -> list[dict]:
         """Convenience wrapper: collect every page into a single list."""
         records = []
         for page in self.fetch_incremental(since, until):
             records.extend(page)
-        
+
         return records
 
     def fetch_cohort(
@@ -104,7 +102,8 @@ class SocrataClient:
 
         query = f"""
                 SELECT unique_key, created_date, closed_date,
-                       agency, complaint_type, status
+                       agency, complaint_type, status, resolution_description,
+                       :updated_at AS source_updated_at
                 WHERE agency = '{agency_value}'
                     AND complaint_type = '{complaint_value}'
                     AND created_date >= '{start.isoformat()}'
@@ -120,9 +119,9 @@ class SocrataClient:
                 headers={"X-App-Token": self.app_token},
                 json={
                     "query": query,
-                    "page": {"pageSize": PAGE_SIZE, "pageNumber": page_number}
+                    "page": {"pageSize": PAGE_SIZE, "pageNumber": page_number},
                 },
-                timeout=REQUEST_TIMEOUT_SECONDS
+                timeout=REQUEST_TIMEOUT_SECONDS,
             )
             response.raise_for_status()
             records = response.json()
@@ -143,8 +142,10 @@ if __name__ == "__main__":
 
     records = []
     for page in client.fetch_cohort(
-        agency="NYPD", complaint_type="Abandoned Vehicle", 
-        start=datetime(2025, 1, 1), end=datetime(2026, 1, 1)
+        agency="NYPD",
+        complaint_type="Abandoned Vehicle",
+        start=datetime(2025, 1, 1),
+        end=datetime(2026, 1, 1),
     ):
         records.extend(page)
 
